@@ -1,161 +1,232 @@
-# Vulnerable Web Application
+# Vulnerable Web Application - Checkmarx One Training
 
-This is a deliberately vulnerable web application built with Go and SQLite for security testing and training purposes.
+[![Security Scan](https://img.shields.io/badge/security-intentionally%20vulnerable-red.svg)](./SECURITY.md)
+[![Go Version](https://img.shields.io/badge/go-1.19+-blue.svg)](https://golang.org/)
+[![Training Ready](https://img.shields.io/badge/training-ready-green.svg)](./TRAINING.md)
 
-## ⚠️ WARNING
-This application contains intentional security vulnerabilities. **DO NOT** deploy this in a production environment or any system connected to the internet without proper isolation.
+This is a deliberately vulnerable web application built with Go and SQLite for Checkmarx One security testing and training purposes.
 
-## Features and Vulnerabilities
+## ⚠️ Security Warning
 
-### SAST (Static Application Security Testing) Issues:
+**This application contains intentional security vulnerabilities for training purposes.**
 
-1. **SQL Injection Vulnerabilities**
-   - Login form: `POST /login`
-   - Search functionality: `GET /search?q=`
-   - Vulnerable code in `searchHandler` and `loginHandler`
+- **DO NOT** deploy to production environments
+- **DO NOT** connect to public networks  
+- **DO NOT** use real credentials or sensitive data
+- **USE ONLY** in isolated training environments
 
-2. **Cross-Site Scripting (XSS)**
-   - Comment system: `POST /comments`
-   - Comments display without proper escaping
-   - Reflected XSS in search results
+## Overview
 
-### SCA (Software Composition Analysis) Issues:
+This Go-based web application demonstrates common security vulnerabilities that can be detected and remediated using Checkmarx One security scanning tools. It serves as a comprehensive training platform for learning about:
 
-3. **Vulnerable Dependencies**
-   - `github.com/dgrijalva/jwt-go v3.2.0+incompatible` - Known vulnerability CVE-2020-26160
-   - `gopkg.in/yaml.v2 v2.2.8` - Potential vulnerabilities in older version
-   - Using Go 1.19 which may have known issues
+- **SAST** (Static Application Security Testing)
+- **SCA** (Software Composition Analysis)  
+- **IaC** (Infrastructure as Code) Security
+- **API Security** Testing
+- **DAST** (Dynamic Application Security Testing)
 
-### IaC (Infrastructure as Code) Security Issues:
-
-4. **Docker Security Misconfigurations**
-   - Running as root user
-   - Using outdated base image (Ubuntu 18.04)
-   - Hardcoded secrets in Dockerfile
-   - Overly permissive file permissions
-   - Exposing unnecessary ports
-
-5. **Kubernetes Security Issues**
-   - No security context defined
-   - Running containers as root
-   - Mounting sensitive host paths
-   - No resource limits
-   - Hardcoded secrets in manifests
-
-### API Security Issues (OWASP API Top 10):
-
-6. **API1: Broken Object Level Authorization**
-   - `GET /api/v1/users/:id` - IDOR vulnerability
-   - `PUT /api/v1/users/:id` - Can modify any user
-   - `DELETE /api/v1/users/:id` - Can delete any user
-
-7. **API2: Broken User Authentication**
-   - Weak JWT implementation with hardcoded secret
-   - No token expiration
-   - `POST /api/v1/auth` - Weak authentication
-
-8. **API3: Excessive Data Exposure**
-   - `GET /api/v1/users` - Exposes passwords and API keys
-   - `GET /api/v1/data` - Massive data exposure
-
-9. **API5: Broken Function Level Authorization**
-   - `GET /api/v1/admin/users` - Weak admin check
-   - Most endpoints have no authorization
-
-10. **API7: Security Misconfiguration**
-    - Debug mode enabled in production
-    - Verbose error messages
-    - No rate limiting
-
-### DAST (Dynamic Application Security Testing) Issues:
-
-11. **Session Management**
-    - Weak session secret
-    - No session timeout
-    - Insecure cookie settings
-
-12. **Information Disclosure**
-    - Debug mode exposing stack traces
-    - Verbose error messages
-    - API endpoints discoverable
-
-13. **Missing Security Headers**
-    - No CSRF protection
-    - No XSS protection headers
-    - No content security policy
-
-## Running the Application
+## Quick Start
 
 ### Prerequisites
 - Go 1.19 or later
 - SQLite3
+- Git
+- Docker (optional)
+- Kubernetes (optional)
 
-### Local Development
+### Installation
 ```bash
+# Clone the repository
+git clone <repository-url>
+cd VulnerableApp
+
+# Install dependencies
 go mod download
-go run main.go
+
+# Start the application
+./run.sh
+
+# Access the application
+open http://localhost:8080
 ```
 
-### Using Docker
+## Vulnerability Catalog
+
+### SAST Vulnerabilities
+
+| Vulnerability | Location | Severity | CWE |
+|---------------|----------|----------|-----|
+| SQL Injection | `main.go:searchHandler` | Critical | CWE-89 |
+| SQL Injection | `main.go:loginHandler` | Critical | CWE-89 |
+| Cross-Site Scripting | `templates/search.html` | High | CWE-79 |
+| Hard-coded Secrets | `main.go:initDB` | Medium | CWE-798 |
+
+### SCA Vulnerabilities
+
+| Package | Version | CVE | Severity | Fix Available |
+|---------|---------|-----|----------|---------------|
+| github.com/dgrijalva/jwt-go | v3.2.0 | CVE-2020-26160 | High | ✅ Yes |
+
+### IaC Security Issues
+
+| File | Issue | Severity | Description |
+|------|-------|----------|-------------|
+| `Dockerfile` | Root User | High | Container runs as root |
+| `Dockerfile` | Hardcoded Secrets | Medium | Environment variables exposed |
+| `k8s-deployment.yaml` | Privileged Container | Critical | Security context allows privilege escalation |
+
+### API Security Vulnerabilities
+
+| Endpoint | Vulnerability | OWASP API Category |
+|----------|---------------|-------------------|
+| `/api/login` | Broken Authentication | API1:2023 |
+| `/api/search` | Excessive Data Exposure | API3:2023 |
+| `/api/v1/internal/*` | Improper Inventory Management | API9:2023 |
+
+### DAST Issues
+
+- Missing security headers (HSTS, CSP, X-Frame-Options)
+- Insecure Direct Object References (IDOR)
+- Information disclosure in error messages
+- Session management vulnerabilities
+
+## Architecture
+
+```
+VulnerableApp/
+├── main.go                 # Main application (contains vulnerabilities)
+├── go.mod                  # Dependencies (includes vulnerable packages)
+├── run.sh                  # Application startup script
+├── templates/              # HTML templates (XSS vulnerabilities)
+├── static/                 # CSS and static assets
+├── remediation/            # Security fix documentation
+├── swagger.yaml            # API documentation (intentionally incomplete)
+├── Dockerfile              # Container configuration (misconfigurations)
+├── k8s-deployment.yaml     # Kubernetes manifest (security issues)
+└── docs/                   # Additional documentation
+```
+
+## Training Workflow
+
+### 1. Initial Scan Setup
 ```bash
+# Set up Checkmarx One project
+# Configure source code repository
+# Initiate baseline security scan
+```
+
+### 2. Vulnerability Discovery
+- Run SAST scan to identify code vulnerabilities
+- Execute SCA scan for dependency issues  
+- Perform IaC scan on Docker/Kubernetes files
+- Test API security with swagger documentation
+- Conduct DAST scan on running application
+
+### 3. Remediation Practice
+- Follow guides in `/remediation/` directory
+- Implement secure coding fixes
+- Upgrade vulnerable dependencies
+- Secure infrastructure configurations
+- Re-scan to verify fixes
+
+See [TRAINING.md](./TRAINING.md) for detailed session checklist.
+
+## API Documentation
+
+The application includes both documented and undocumented APIs:
+
+### Documented APIs (swagger.yaml)
+- `POST /api/login` - User authentication
+- `GET /api/search` - Content search
+- `GET /api/users/{id}` - User profile retrieval
+
+### Shadow APIs (Undocumented)
+These endpoints exist in the application but are intentionally omitted from swagger.yaml to demonstrate API inventory discovery:
+
+- `GET /api/v1/internal/debug` - Debug information
+- `POST /api/v1/internal/backup` - Database backup
+- `GET /api/v1/internal/logs` - Application logs
+
+## Development Setup
+
+### Running with Docker
+```bash
+# Build container
 docker build -t vulnerable-app .
+
+# Run container (insecurely configured)
 docker run -p 8080:8080 vulnerable-app
 ```
 
-### Using Docker Compose
+### Kubernetes Deployment
 ```bash
-docker-compose up
-```
-
-### Using Kubernetes
-```bash
+# Deploy to cluster (with security misconfigurations)
 kubectl apply -f k8s-deployment.yaml
+
+# Access via port-forward
+kubectl port-forward deployment/vulnerable-app 8080:8080
 ```
 
-## Testing the Vulnerabilities
+## Testing Vulnerabilities
 
-### SQL Injection Testing
-1. Navigate to `/search`
-2. Try payloads like:
-   - `' OR '1'='1`
-   - `' UNION SELECT 1,username,password FROM users--`
+### SQL Injection Test
+```bash
+# Test login bypass
+curl -X POST http://localhost:8080/api/login \
+  -d "username=admin' OR '1'='1&password=anything"
 
-### XSS Testing
-1. Navigate to `/comments`
-2. Add comments with payloads like:
-   - `<script>alert('XSS')</script>`
-   - `<img src=x onerror=alert('XSS')>`
+# Test search injection  
+curl "http://localhost:8080/search?q='; DROP TABLE users; --"
+```
 
-### API Testing
-1. Test unauthorized access:
-   - `curl http://localhost:8080/api/v1/users`
-   - `curl http://localhost:8080/api/v1/users/1`
+### XSS Test
+```bash
+# Submit malicious script
+curl -X POST http://localhost:8080/search \
+  -d "query=<script>alert('XSS')</script>"
+```
 
-2. Test IDOR:
-   - `curl -X PUT http://localhost:8080/api/v1/users/1 -d '{"role":"admin"}' -H "Content-Type: application/json"`
+### JWT Vulnerability Test
+```bash
+# Test signature bypass (CVE-2020-26160)
+# Generate token with 'none' algorithm
+```
 
-### Authentication Testing
-- Default credentials: `admin / admin123`
-- Try SQL injection in login form
+## Remediation Resources
 
-## Security Scanning
+Each vulnerability includes comprehensive remediation guidance:
 
-This application is designed to be detected by various security tools:
+- **[SAST Fixes](./remediation/sast-remediation.md)** - Secure coding practices
+- **[SCA Fixes](./remediation/sca-remediation.md)** - Dependency management  
+- **[IaC Fixes](./remediation/iac-remediation.md)** - Infrastructure security
+- **[API Security](./remediation/api-remediation.md)** - API protection strategies
 
-- **SAST Tools**: SonarQube, CodeQL, Semgrep, Checkmarx
-- **SCA Tools**: Snyk, OWASP Dependency Check, WhiteSource
-- **IaC Scanners**: Checkov, Terrascan, Kube-score
-- **DAST Tools**: OWASP ZAP, Burp Suite, Nuclei
+## Contributing
 
-## Educational Purpose
+Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on:
+- Making training content updates
+- Adding new vulnerability examples
+- Maintaining educational value
+- Testing with security scanners
 
-This application demonstrates common security vulnerabilities found in web applications. Use it to:
+## Security Policy
 
-- Learn about different types of security vulnerabilities
-- Practice using security scanning tools
-- Understand how to identify and fix security issues
-- Train development teams on secure coding practices
+See [SECURITY.md](./SECURITY.md) for:
+- Vulnerability disclosure process
+- Training vs. real security issues
+- Contact information
+- Supported versions
 
 ## License
 
-This project is for educational purposes only. Use at your own risk.
+This project is for educational purposes only. See [LICENSE](./LICENSE) for details.
+
+## Support
+
+- **Training Questions**: training@checkmarx.com
+- **Technical Issues**: Create an issue in this repository
+- **Checkmarx One Help**: Refer to official documentation
+
+---
+
+**Remember**: This application is intentionally vulnerable. Use only for security training in isolated environments.
