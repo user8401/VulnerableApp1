@@ -1,0 +1,68 @@
+# Kubernetes deployment with security issues
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vulnerable-app
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vulnerable-app
+  template:
+    metadata:
+      labels:
+        app: vulnerable-app
+    spec:
+      # VULNERABLE: No security context defined
+      containers:
+      - name: vulnerable-app
+        image: vulnerable-app:latest
+        ports:
+        - containerPort: 8080
+        # VULNERABLE: Hardcoded secrets in environment
+        env:
+        - name: DB_PASSWORD
+          value: "supersecret123"
+        - name: API_KEY
+          value: "admin-secret-key"
+        - name: DEBUG
+          value: "true"
+        # VULNERABLE: No resource limits
+        # VULNERABLE: Running as root
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+          allowPrivilegeEscalation: true
+          privileged: true
+        # VULNERABLE: Mounting sensitive host paths
+        volumeMounts:
+        - name: host-root
+          mountPath: /host
+        - name: docker-socket
+          mountPath: /var/run/docker.sock
+      volumes:
+      - name: host-root
+        hostPath:
+          path: /
+      - name: docker-socket
+        hostPath:
+          path: /var/run/docker.sock
+      # VULNERABLE: No pod security context
+      # VULNERABLE: No network policies
+      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vulnerable-app-service
+spec:
+  selector:
+    app: vulnerable-app
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  # VULNERABLE: Exposing service externally without proper security
+  type: LoadBalancer

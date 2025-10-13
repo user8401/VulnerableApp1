@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  vulnerable-app:
+    build: .
+    ports:
+      - "8080:8080"
+      # VULNERABLE: Exposing unnecessary ports
+      - "22:22"
+      - "3306:3306"
+    environment:
+      # VULNERABLE: Hardcoded secrets in environment variables
+      - DB_PASSWORD=supersecret123
+      - API_KEY=admin-secret-key
+      - DEBUG=true
+      # VULNERABLE: Exposing internal paths
+      - APP_PATH=/app
+    volumes:
+      # VULNERABLE: Mounting host filesystem with write access
+      - /:/host:rw
+      # VULNERABLE: Mounting docker socket
+      - /var/run/docker.sock:/var/run/docker.sock
+    # VULNERABLE: Running in privileged mode
+    privileged: true
+    # VULNERABLE: Adding dangerous capabilities
+    cap_add:
+      - SYS_ADMIN
+      - NET_ADMIN
+    # VULNERABLE: No resource limits
+    # VULNERABLE: No restart policy
+    # VULNERABLE: No health checks
+    networks:
+      - vulnerable-network
+
+networks:
+  vulnerable-network:
+    driver: bridge
+    # VULNERABLE: Using default bridge network settings

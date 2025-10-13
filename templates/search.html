@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Users</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+        <a href="/profile">Profile</a>
+        <a href="/comments">Comments</a>
+        <a href="/search">Search</a>
+    </nav>
+    
+    <div class="container">
+        <h1>Search Users</h1>
+        
+        <form method="GET" action="/search">
+            <div class="form-group">
+                <label for="q">Search:</label>
+                <input type="text" id="q" name="q" value="{{.query}}" placeholder="Enter username to search">
+            </div>
+            <button type="submit">Search</button>
+        </form>
+        
+        {{if .users}}
+        <div class="search-results">
+            <h2>Search Results:</h2>
+            {{range .users}}
+            <div class="user-result">
+                <p><strong>ID:</strong> {{.ID}}</p>
+                <p><strong>Username:</strong> {{.Username}}</p>
+                <p><strong>Email:</strong> {{.Email}}</p>
+            </div>
+            {{end}}
+        </div>
+        {{end}}
+        
+        <div class="sql-injection-demo">
+            <h3>SQL Injection Test Payloads:</h3>
+            <p>Try entering these in the search field:</p>
+            <ul>
+                <li><code>' OR '1'='1</code></li>
+                <li><code>' UNION SELECT 1,username,password FROM users--</code></li>
+                <li><code>' OR 1=1--</code></li>
+                <li><code>'; DROP TABLE users;--</code></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

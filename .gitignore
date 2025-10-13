@@ -1,0 +1,253 @@
+# Git ignore file for the vulnerable web application
+
+# ====================
+# Go specific
+# ====================
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+vulnerable-app
+vulnerable-app.exe
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Go workspace file
+go.work
+go.work.sum
+
+# Dependency directories (downloaded dependencies)
+vendor/
+
+# ====================
+# Database files
+# ====================
+
+# SQLite database files
+*.db
+*.sqlite
+*.sqlite3
+vulnerable.db
+
+# Database backups
+*.sql
+backups/
+
+# ====================
+# Security & Secrets
+# ====================
+
+# Environment files with secrets
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+
+# Secret files
+secrets/
+*.key
+*.pem
+*.p12
+*.crt
+*.csr
+
+# JWT secrets and API keys
+jwt-secret.txt
+api-keys.txt
+
+# ====================
+# IDE and Editor files
+# ====================
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# IntelliJ IDEA / GoLand
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# ====================
+# OS generated files
+# ====================
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# ====================
+# Logs and temporary files
+# ====================
+
+# Log files
+*.log
+logs/
+log/
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# Cache directories
+.cache/
+
+# ====================
+# Docker & Container files
+# ====================
+
+# Docker ignore (should be in .dockerignore but good to have here too)
+.dockerignore
+
+# ====================
+# Kubernetes & Helm
+# ====================
+
+# Helm
+*.tgz
+
+# Kubernetes temporary files
+k8s-temp/
+
+# ====================
+# CI/CD and Build artifacts
+# ====================
+
+# Build directories
+build/
+dist/
+target/
+
+# Coverage reports
+coverage.txt
+coverage.html
+coverage.out
+
+# Dependency analysis
+deps.txt
+
+# ====================
+# Security Scanning Results
+# ====================
+
+# Checkmarx results
+checkmarx-results/
+*.cxr
+
+# SonarQube
+.sonar/
+
+# SAST/DAST/SCA results
+security-results/
+scan-results/
+vulnerability-reports/
+
+# ====================
+# Documentation & Reports
+# ====================
+
+# Generated documentation
+docs/generated/
+
+# Security reports
+security-reports/
+penetration-test-results/
+
+# ====================
+# Third-party sources and dependencies
+# ====================
+
+# Downloaded dependencies (Go modules are handled by go.mod/go.sum)
+# But prevent any manually downloaded third-party source
+third-party/
+external-libs/
+
+# Node modules (if any frontend components added)
+node_modules/
+
+# ====================
+# Training specific
+# ====================
+
+# Student submissions/solutions
+solutions/
+student-work/
+
+# Training materials that shouldn't be in repo
+training-slides/
+instructor-notes/
+
+# ====================
+# Backup and temporary files
+# ====================
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Patch files
+*.patch
+*.diff
+
+# Archive files
+*.tar
+*.tar.gz
+*.zip
+*.rar
+
+# ====================
+# Performance and Profiling
+# ====================
+
+# Go profiling files
+*.prof
+cpu.prof
+mem.prof
+profile.out
+
+# Benchmarking results
+benchmark-results/

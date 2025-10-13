@@ -1,0 +1,127 @@
+# Git attributes file for the vulnerable web application
+
+# Set default behavior to automatically normalize line endings
+* text=auto
+
+# ====================
+# Source code files
+# ====================
+
+# Go source files
+*.go text eol=lf
+
+# Go module files
+go.mod text eol=lf
+go.sum text eol=lf
+
+# ====================
+# Configuration files
+# ====================
+
+# YAML files
+*.yaml text eol=lf
+*.yml text eol=lf
+
+# JSON files
+*.json text eol=lf
+
+# TOML files
+*.toml text eol=lf
+
+# Environment files
+.env* text eol=lf
+
+# ====================
+# Documentation files
+# ====================
+
+# Markdown files
+*.md text eol=lf
+
+# Text files
+*.txt text eol=lf
+
+# ====================
+# Web files
+# ====================
+
+# HTML files
+*.html text eol=lf
+
+# CSS files
+*.css text eol=lf
+
+# JavaScript files
+*.js text eol=lf
+*.ts text eol=lf
+
+# ====================
+# Container and Infrastructure
+# ====================
+
+# Docker files
+Dockerfile text eol=lf
+*.dockerfile text eol=lf
+
+# Kubernetes files
+*.k8s text eol=lf
+
+# Shell scripts
+*.sh text eol=lf
+
+# Makefile
+Makefile text eol=lf
+*.mk text eol=lf
+
+# ====================
+# Binary files (do not normalize)
+# ====================
+
+# Images
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg binary
+
+# Archives
+*.zip binary
+*.tar binary
+*.gz binary
+*.rar binary
+
+# Executables
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary
+
+# Databases
+*.db binary
+*.sqlite binary
+*.sqlite3 binary
+
+# Certificates and keys
+*.pem binary
+*.key binary
+*.p12 binary
+*.crt binary
+*.csr binary
+
+# ====================
+# Language specific
+# ====================
+
+# Linguist overrides for GitHub language detection
+*.yaml linguist-language=YAML
+*.yml linguist-language=YAML
+*.json linguist-language=JSON
+*.md linguist-language=Markdown
+
+# Mark vendor directories as vendored
+vendor/** linguist-vendored
+
+# Mark generated files as generated
+**/swagger.json linguist-generated
+**/swagger.yaml linguist-generated

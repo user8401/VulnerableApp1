@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{.title}}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+        <a href="/profile">Profile</a>
+        <a href="/comments">Comments</a>
+        <a href="/search">Search</a>
+    </nav>
+    
+    <div class="container">
+        <h1>Welcome to Vulnerable Web App</h1>
+        <p>This is a deliberately vulnerable web application for security testing purposes.</p>
+        
+        <h2>Features:</h2>
+        <ul>
+            <li>User authentication</li>
+            <li>Comment system</li>
+            <li>User search</li>
+            <li>REST API</li>
+        </ul>
+        
+        <h2>API Endpoints:</h2>
+        <ul>
+            <li><code>GET /api/v1/users</code> - Get all users</li>
+            <li><code>GET /api/v1/users/:id</code> - Get user by ID</li>
+            <li><code>PUT /api/v1/users/:id</code> - Update user</li>
+            <li><code>DELETE /api/v1/users/:id</code> - Delete user</li>
+            <li><code>GET /api/v1/admin/users</code> - Admin endpoint (requires X-API-Key header)</li>
+            <li><code>POST /api/v1/auth</code> - Authenticate and get JWT token</li>
+            <li><code>GET /api/v1/data</code> - Get all data</li>
+        </ul>
+    </div>
+</body>
+</html>

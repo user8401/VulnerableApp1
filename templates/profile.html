@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+        <a href="/profile">Profile</a>
+        <a href="/comments">Comments</a>
+        <a href="/search">Search</a>
+    </nav>
+    
+    <div class="container">
+        <h1>User Profile</h1>
+        
+        <div class="profile-info">
+            <h2>User Information</h2>
+            <p><strong>ID:</strong> {{.user.ID}}</p>
+            <p><strong>Username:</strong> {{.user.Username}}</p>
+            <p><strong>Email:</strong> {{.user.Email}}</p>
+            <p><strong>Role:</strong> {{.user.Role}}</p>
+        </div>
+        
+        <div class="api-info">
+            <h2>API Testing</h2>
+            <p>Try these API endpoints:</p>
+            <ul>
+                <li>GET /api/v1/users/{{.user.ID}} (view your data)</li>
+                <li>GET /api/v1/users (view all users - no auth required!)</li>
+                <li>PUT /api/v1/users/{{.user.ID}} (update any user - no auth!)</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
