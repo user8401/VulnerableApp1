@@ -1,7 +1,7 @@
 # Vulnerable Dockerfile with multiple security issues
 
 # VULNERABLE: Using outdated base image with known vulnerabilities
-FROM ubuntu:18.04
+FROM ubuntu:24.04
 
 # VULNERABLE: Running as root user
 USER root
@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
 # VULNERABLE: Setting weak file permissions
 RUN chmod 777 /tmp
 
+
 # VULNERABLE: Exposing sensitive build arguments
 ARG DATABASE_PASSWORD=supersecret123
 ARG API_KEY=admin-secret-key
@@ -28,8 +29,8 @@ ENV SECRET_KEY=${API_KEY}
 ENV DEBUG=true
 
 # VULNERABLE: Creating user with predictable UID/GID
-RUN groupadd -g 1000 appuser && \
-    useradd -r -u 1000 -g appuser appuser
+RUN groupadd -g 1001 appuser && \
+    useradd -r -u 1001 -g appuser appuser
 
 # Set working directory
 WORKDIR /app
@@ -41,6 +42,7 @@ COPY . .
 # VULNERABLE: Not running dependency scan
 
 # Build the application
+RUN go mod tidy
 RUN go mod download
 RUN go build -o vulnerable-app main.go
 
@@ -48,7 +50,7 @@ RUN go build -o vulnerable-app main.go
 USER root
 
 # VULNERABLE: Installing additional packages without version pinning
-RUN apt-get update && apt-get install -y netcat
+RUN apt-get update && apt-get install -y netcat-traditional
 
 # VULNERABLE: Setting overly permissive file permissions
 RUN chmod 755 /app/vulnerable-app
